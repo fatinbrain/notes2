@@ -12,6 +12,9 @@ class NotesBase
 public:
     NotesBase();
     
+    QString tags() const;
+    void setTags(const QString &tags);
+    
 public slots:
     void clear();    
     void add(const NoteRecord& rec);
@@ -19,6 +22,7 @@ public slots:
     void rm(const int index);
     void writeToXML(const QString fname);
     void readFromXML(const QString fname);
+    NoteRecord item(const int index);    
     
 private:
     QDateTime crdt_;

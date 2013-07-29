@@ -33,8 +33,27 @@ void NotesBase::readFromXML(const QString fname)
     qDebug() << QString("[notesbase]attempt to read xml to file [%1]").arg(fname);
 }
 
+NoteRecord NotesBase::item(const int index)
+{
+    if(index < records_.size() && index >= 0){
+        return records_.at(index);
+    }else{
+        return NoteRecord();
+    }
+}
 
 int NotesBase::size() const
 {
     return records_.size();
+}
+            
+            
+QString NotesBase::tags() const
+{
+    return tags_;
+}
+
+void NotesBase::setTags(const QString &tags)
+{
+    tags_ = tags;
 }
