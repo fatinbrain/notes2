@@ -36,9 +36,13 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="pbNewNote">
           <property name="text">
-           <string>PushButton</string>
+           <string>New note</string>
+          </property>
+          <property name="icon">
+           <iconset resource="notes2.qrc">
+            <normaloff>:/img/img/Add.png</normaloff>:/img/img/Add.png</iconset>
           </property>
          </widget>
         </item>
@@ -103,6 +107,8 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionAdd_note"/>
+   <addaction name="separator"/>
    <addaction name="actionExit"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -121,6 +127,18 @@
     <string>Exit application</string>
    </property>
   </action>
+  <action name="actionAdd_note">
+   <property name="icon">
+    <iconset resource="notes2.qrc">
+     <normaloff>:/img/img/Add.png</normaloff>:/img/img/Add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add note</string>
+   </property>
+   <property name="toolTip">
+    <string>Add new note</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
@@ -136,6 +154,22 @@
     <hint type="sourcelabel">
      <x>491</x>
      <y>275</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbNewNote</sender>
+   <signal>clicked()</signal>
+   <receiver>actionAdd_note</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>276</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>

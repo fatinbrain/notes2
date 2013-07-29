@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QDebug>
+
+#include "newnotedialog.h"
 
 namespace Ui {
 class Notes2;
@@ -17,8 +20,11 @@ public:
     ~Notes2();
     
 private slots:
-    void on_actionExit_triggered();
     void saveAndExit();
+    void actAddNewNote();
+    
+    void on_actionExit_triggered();
+    void on_actionAdd_note_triggered();
     
 private:
     Ui::Notes2 *ui;

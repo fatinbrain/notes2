@@ -23,3 +23,15 @@ void Notes2::saveAndExit()
     QMessageBox::information(this, "action exit", "will save base\nand exit");
     close();
 }
+
+void Notes2::actAddNewNote()
+{
+    qDebug() << QString("[notes2] attempt to add new note");
+    NewNoteDialog* nnDialog = new NewNoteDialog();
+    nnDialog->show();
+} 
+
+void Notes2::on_actionAdd_note_triggered()
+{
+    actAddNewNote();
+}

@@ -13,11 +13,18 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        notes2.cpp
+        notes2.cpp \
+    noterecord.cpp \
+    notesbase.cpp \
+    newnotedialog.cpp
 
-HEADERS  += notes2.h
+HEADERS  += notes2.h \
+    noterecord.h \
+    notesbase.h \
+    newnotedialog.h
 
-FORMS    += notes2.ui
+FORMS    += notes2.ui \
+    newnotedialog.ui
 
 RESOURCES += \
     notes2.qrc
