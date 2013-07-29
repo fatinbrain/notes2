@@ -5,6 +5,10 @@
 #include <QList>
 #include <QDateTime>
 #include <QDebug>
+#include <QFile>
+#include <QTextStream>
+#include <qdom.h>
+
 #include "noterecord.h"
 
 class NotesBase
@@ -20,8 +24,8 @@ public slots:
     void add(const NoteRecord& rec);
     int size() const;
     void rm(const int index);
-    void writeToXML(const QString fname);
-    void readFromXML(const QString fname);
+    bool writeToXML(const QString fname);
+    bool readFromXML(const QString fname);
     NoteRecord item(const int index);    
     
 private:
@@ -29,6 +33,8 @@ private:
     QDateTime mddt_;
     QString tags_;
     QList<NoteRecord> records_;
+    
+    QDateTime dtFromString(const QString s);
 };
 
 #endif // NOTESBASE_H

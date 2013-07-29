@@ -33,6 +33,8 @@ private slots:
     
     void on_pbReadBase_clicked();
     
+    void on_pb_clicked();
+    
 private:
     Ui::Notes2 *ui;
     

@@ -5,12 +5,19 @@ NewNoteDialog::NewNoteDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::NewNoteDialog)
 {
+    this->setWindowTitle("New note");
     ui->setupUi(this);
     ui->pbNewTag->setEnabled(false);
     ui->leNewTag->setText("");
     
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    
     connect(ui->leNewTag, SIGNAL(textChanged(QString)),
             this, SLOT(checkEnablePbNewTag(QString)));
+    connect(ui->leCaption, SIGNAL(textChanged(QString)),
+            this, SLOT(validateNote()));
+    connect(ui->teText, SIGNAL(textChanged()),
+            this, SLOT(validateNote()));
 }
 
 NewNoteDialog::~NewNoteDialog()
@@ -49,14 +56,22 @@ void NewNoteDialog::checkEnablePbNewTag(const QString str)
 
 void NewNoteDialog::validateNote()
 {
-    if(!ui->leCaption->text().isNull() 
+    bool bValid = false;
+    
+    if(!ui->leCaption->text().isEmpty() 
             && !ui->teText->toPlainText().isEmpty()){
-        
+        bValid = true;
+    }else{
+        bValid = false;
     }
+    
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(bValid);
 }
 
 void NewNoteDialog::on_pbNewTag_clicked()
 {
-    tags_ += "," + ui->leNewTag->text();
+    //tags_ += "," + ui->leNewTag->text();
     actRenderTags();
+    ui->lwTags->addItem(ui->leNewTag->text());
+    ui->leNewTag->setText("");
 }

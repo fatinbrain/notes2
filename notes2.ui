@@ -30,7 +30,17 @@
           </sizepolicy>
          </property>
         </widget>
-        <widget class="QTextEdit" name="teNoteText"/>
+        <widget class="QTextEdit" name="teNoteText">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="tabStopWidth">
+          <number>40</number>
+         </property>
+        </widget>
        </widget>
       </item>
       <item>
@@ -54,9 +64,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="pb">
           <property name="text">
-           <string>PushButton</string>
+           <string>X action</string>
           </property>
          </widget>
         </item>

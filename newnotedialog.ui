@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>New note</string>
   </property>
   <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
+     <x>11</x>
+     <y>11</y>
      <width>607</width>
      <height>549</height>
     </rect>
@@ -118,25 +118,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
-        <item>
-         <widget class="QListWidget" name="lwTagsAvailable"/>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <item>
-           <widget class="QLineEdit" name="leNewTag"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pbNewTag">
-            <property name="text">
-             <string>Add new tag</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
+       <widget class="QListWidget" name="lwTagsAvailable"/>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -170,7 +152,25 @@
        </layout>
       </item>
       <item>
-       <widget class="QListWidget" name="lwTags"/>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QListWidget" name="lwTags"/>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QLineEdit" name="leNewTag"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pbNewTag">
+            <property name="text">
+             <string>Add new tag</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
