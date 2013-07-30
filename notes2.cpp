@@ -6,8 +6,16 @@ Notes2::Notes2(QWidget *parent) :
     ui(new Ui::Notes2)
 {
     ui->setupUi(this);
+    
+    ui->mainToolBar->actions().at(1)->setEnabled(false);
+    
     connect(ui->lwNotes, SIGNAL(currentRowChanged(int)),
             this, SLOT(actRenderNote(int)));
+    connect(ui->lwNotes, SIGNAL(currentRowChanged(int)),
+            this, SLOT(checkRmNoteAvailable(int)));
+    
+    nb.readFromXML("base.xml");
+    actRenderBase();
 }
 
 Notes2::~Notes2()
@@ -31,12 +39,14 @@ void Notes2::actAddNewNote()
 {
     qDebug() << QString("[notes2] attempt to add new note");
     
-    NewNoteDialog* nnDialog = new NewNoteDialog();
-    nnDialog->setTags(nb.tags());
+    NewNoteDialog* nnDialog = new NewNoteDialog(this);
+    qDebug() << "set available tags to record:" << msiToString(nb.tags());
+    nnDialog->setAvailableTags(nb.tags());
     
     if(nnDialog->exec() == QDialog::Accepted){        
         NoteRecord n = nnDialog->rezult();
         nb.add(n);
+        nb.updateModifyTime();
         actRenderBase();
     }else{
         qDebug() << "[dia rez]rejected";
@@ -57,7 +67,14 @@ void Notes2::actRenderNote(const int index)
         ui->teNoteText->clear();
         ui->teNoteText->append(nb.item(nb.size() - index - 1).text());
     }
-} 
+}
+
+void Notes2::checkRmNoteAvailable(const int index)
+{
+    bool isVaildIndex = (index >= 0);
+    ui->pbRemoveNote->setEnabled(isVaildIndex);
+    ui->mainToolBar->actions().at(1)->setEnabled(isVaildIndex);
+}
 
 void Notes2::on_actionAdd_note_triggered()
 {

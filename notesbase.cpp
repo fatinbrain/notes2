@@ -3,7 +3,7 @@
 NotesBase::NotesBase():
     crdt_(QDateTime::currentDateTime()),
     mddt_(QDateTime::currentDateTime()),
-    tags_("")
+    tags_(msiFromString(""))
 {
 }
 
@@ -15,6 +15,7 @@ void NotesBase::clear()
 void NotesBase::add(const NoteRecord &rec)
 {
     records_.append(rec);
+    adsorbTagsFromRecord(rec);
 }
 
 
@@ -34,7 +35,7 @@ bool NotesBase::writeToXML(const QString fname)
     deNotesBase.setAttribute("md", mddt_.toTime_t());
     
     QDomElement deTags = doc.createElement("Tags");
-    QDomText deTagsText = doc.createTextNode(tags());
+    QDomText deTagsText = doc.createTextNode(msiToString(tags()));
     deTags.appendChild(deTagsText);
     
     QDomElement deNotes = doc.createElement("Notes");
@@ -52,8 +53,11 @@ bool NotesBase::writeToXML(const QString fname)
         deNoteText.appendChild(deNoteTextText);
         
         QDomElement deNoteTags = doc.createElement("Tags");
-        QDomText deNoteTagsText = doc.createTextNode(records_.at(i).tags());
-        deNoteTags.appendChild(deNoteTagsText);
+        QString sTagline = msiToString(records_.at(i).tags());        
+        if(!sTagline.isEmpty()){
+            QDomText deNoteTagsText = doc.createTextNode(sTagline);            
+            deNoteTags.appendChild(deNoteTagsText);
+        }
         
         deNotes.appendChild(deNote);
         deNote.appendChild(deNoteCaption);
@@ -121,7 +125,7 @@ bool NotesBase::readFromXML(const QString fname)
             if(de.tagName() == "Tags"){
                 QDomText dt = de.firstChild().toText();                
                 qDebug() << "tags:\t" + dt.data();
-                tags() = dt.data();
+                tags_ = msiFromString(dt.data());
             }
             
             if(de.tagName() == "Notes"){
@@ -160,13 +164,14 @@ bool NotesBase::readFromXML(const QString fname)
                             }else if(deNotesEl.tagName() == "Tags"){
                                 QDomText dtTagsText = deNotesEl.firstChild().toText();
                                 qDebug() << "Tags\t" + dtTagsText.data();
-                                n.setTags(dtTagsText.data());
+                                n.setTags(msiFromString(dtTagsText.data()));
                             }
                         }
                         
                         dnNote = dnNote.nextSibling();
                     }
                     
+                    n.initEnd();
                     records_.append(n);
                     
                     dnNotesChild = dnNotesChild.nextSibling();
@@ -180,13 +185,18 @@ bool NotesBase::readFromXML(const QString fname)
     return true;
 }
 
-NoteRecord NotesBase::item(const int index)
+NoteRecord NotesBase::item(const int index) const
 {
     if(index < records_.size() && index >= 0){
         return records_.at(index);
     }else{
         return NoteRecord();
     }
+}
+
+void NotesBase::updateModifyTime()
+{
+    mddt_ = QDateTime::currentDateTime();
 }
 
 QDateTime NotesBase::dtFromString(const QString s)
@@ -204,18 +214,41 @@ QDateTime NotesBase::dtFromString(const QString s)
     return dtRez;
 }
 
+void NotesBase::adsorbTagsFromRecord(const NoteRecord &rec)
+{
+    foreach (QString key, rec.tags().keys()) {
+        if(key.isEmpty()){
+            continue;
+        }
+        if(tags_.contains(key)){
+            tags_[key]++;
+            qDebug() << "[notebase]inc tag[" << key << "]" << QString::number(tags_.value(key));
+        }else{
+            tags_[key] = 1;
+            qDebug() << "[notebase]new tag:" << key;
+        }
+    }
+}
+
 int NotesBase::size() const
 {
     return records_.size();
 }
-            
-            
-QString NotesBase::tags() const
+          
+
+QMap<QString, int> NotesBase::tags() const
 {
-    return tags_;
+	return tags_;
 }
 
-void NotesBase::setTags(const QString &tags)
+void NotesBase::setTags(const QMap<QString, int> &tags)
 {
-    tags_ = tags;
+	if(tags_ != tags){
+		tags_ = tags;
+    }
+}
+
+void NotesBase::setTags(const QString str)
+{
+    tags_ = msiFromString(str);
 }

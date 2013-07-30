@@ -27,18 +27,18 @@ private slots:
     void actAddNewNote();
     void actRenderBase();
     void actRenderNote(const int index);
+    void checkRmNoteAvailable(const int index);
     
     void on_actionExit_triggered();
     void on_actionAdd_note_triggered();
-    
-    void on_pbReadBase_clicked();
-    
+    void on_pbReadBase_clicked();    
     void on_pb_clicked();
     
 private:
     Ui::Notes2 *ui;
     
     NotesBase nb;
+    QAction* aRmNote;
 };
 
 #endif // NOTES2_H

@@ -64,6 +64,20 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="pbRemoveNote">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Remove note</string>
+          </property>
+          <property name="icon">
+           <iconset resource="notes2.qrc">
+            <normaloff>:/img/img/Remove.png</normaloff>:/img/img/Remove.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="pb">
           <property name="text">
            <string>X action</string>
@@ -115,7 +129,15 @@
     </property>
     <addaction name="actionExit"/>
    </widget>
+   <widget class="QMenu" name="menuNotes">
+    <property name="title">
+     <string>Notes</string>
+    </property>
+    <addaction name="actionAdd_note"/>
+    <addaction name="actionRemove_note"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuNotes"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -125,6 +147,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionAdd_note"/>
+   <addaction name="actionRemove_note"/>
    <addaction name="separator"/>
    <addaction name="actionExit"/>
   </widget>
@@ -154,6 +177,18 @@
    </property>
    <property name="toolTip">
     <string>Add new note</string>
+   </property>
+  </action>
+  <action name="actionRemove_note">
+   <property name="icon">
+    <iconset resource="notes2.qrc">
+     <normaloff>:/img/img/Remove.png</normaloff>:/img/img/Remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Remove note</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove current note</string>
    </property>
   </action>
  </widget>

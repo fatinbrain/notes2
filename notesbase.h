@@ -10,14 +10,16 @@
 #include <qdom.h>
 
 #include "noterecord.h"
+#include "tools/mapTool.h"
 
 class NotesBase
 {
 public:
     NotesBase();
-    
-    QString tags() const;
-    void setTags(const QString &tags);
+
+    QMap<QString, int> tags() const;
+    void setTags(const QMap<QString, int> &tags);
+    void setTags(const QString str);
     
 public slots:
     void clear();    
@@ -26,15 +28,17 @@ public slots:
     void rm(const int index);
     bool writeToXML(const QString fname);
     bool readFromXML(const QString fname);
-    NoteRecord item(const int index);    
+    NoteRecord item(const int index) const;
+    void updateModifyTime();
     
 private:
     QDateTime crdt_;
     QDateTime mddt_;
-    QString tags_;
+    QMap<QString, int> tags_;
     QList<NoteRecord> records_;
     
     QDateTime dtFromString(const QString s);
+    void adsorbTagsFromRecord(const NoteRecord& rec);
 };
 
 #endif // NOTESBASE_H

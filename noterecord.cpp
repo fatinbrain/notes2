@@ -1,10 +1,11 @@
 #include "noterecord.h"
 
 NoteRecord::NoteRecord(QString caption, QString text, QString tags):
-    caption_(caption), text_(text), tags_(tags),    
+    caption_(caption), text_(text), tags_(msiFromString(tags)),
     dtcr_(QDateTime::fromMSecsSinceEpoch(0)),
     dtmd_(QDateTime::fromMSecsSinceEpoch(0)),
-    isValid_(true)
+    isValid_(true),
+    isInit_(true)
 {
 }
 
@@ -32,7 +33,12 @@ void NoteRecord::validate()
         if(dtcr_ == QDateTime::fromMSecsSinceEpoch(0)){
             dtcr_ = QDateTime::currentDateTime();
         }
-        dtmd_ = QDateTime::currentDateTime();
+        if(dtmd_ == QDateTime::fromMSecsSinceEpoch(0)){
+            dtmd_ = QDateTime::currentDateTime();
+        }
+        if(!isInit_){
+            dtmd_ = QDateTime::currentDateTime();
+        }
     }
 }
 
@@ -48,14 +54,31 @@ void NoteRecord::setDtcr(const QDateTime &dtcr)
     }
 }
 
-QString NoteRecord::tags() const
+QMap<QString, int> NoteRecord::tags() const
 {
-    return tags_;
+	return tags_;
 }
 
-void NoteRecord::setTags(const QString &tags)
+void NoteRecord::setTags(const QMap<QString, int> &tags)
 {
     tags_ = tags;
+}
+
+void NoteRecord::setTags(const QString str)
+{
+    tags_ = msiFromString(str);
+}
+
+void NoteRecord::addTag(const QString tag)
+{
+    if(!tag.isEmpty() && !tag.isNull()){
+        tags_[tag] = 0;
+    }
+}
+
+void NoteRecord::initBegin()
+{
+    isInit_ = true;
 }
 
 QString NoteRecord::text() const
@@ -78,4 +101,10 @@ void NoteRecord::setCaption(const QString &caption)
 {
     caption_ = caption;
     validate();
+}
+
+
+void NoteRecord::initEnd()
+{
+    isInit_ = false;
 }

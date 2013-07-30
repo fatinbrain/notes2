@@ -16,12 +16,14 @@ SOURCES += main.cpp\
         notes2.cpp \
     noterecord.cpp \
     notesbase.cpp \
-    newnotedialog.cpp
+    newnotedialog.cpp \
+    tools/mapTool.cpp
 
 HEADERS  += notes2.h \
     noterecord.h \
     notesbase.h \
-    newnotedialog.h
+    newnotedialog.h \
+    tools/mapTool.h
 
 FORMS    += notes2.ui \
     newnotedialog.ui

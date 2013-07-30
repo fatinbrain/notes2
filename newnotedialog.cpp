@@ -30,10 +30,11 @@ NoteRecord NewNoteDialog::rezult() const
     return note_;
 }
 
-void NewNoteDialog::setTags(const QString &tags)
+void NewNoteDialog::setAvailableTags(const QMap<QString, int> &tags)
 {
-    tags_ = tags;
-    actRenderTags();
+    //tags_ = tags;
+    actRenderAvailableTags(tags);
+//    actRenderTags();
 }
 
 void NewNoteDialog::on_buttonBox_accepted()
@@ -41,12 +42,29 @@ void NewNoteDialog::on_buttonBox_accepted()
     note_.setCaption(ui->leCaption->text());
     note_.setText(ui->teText->toPlainText());
     note_.setDtmd(QDateTime::currentDateTime());
+    note_.setTags(tags_);
 }
 
 void NewNoteDialog::actRenderTags()
 {
+//    ui->lwTagsAvailable->clear();    
+//    ui->lwTagsAvailable->addItems(tags_.keys());
+    QString s;
+    foreach(QString k, tags_.keys()){
+        s += k + ",";
+    }
+
+    ui->lTags->setText(s);
+}
+
+void NewNoteDialog::actRenderAvailableTags(QMap<QString, int> tags)
+{
     ui->lwTagsAvailable->clear();
-    ui->lwTagsAvailable->addItems(tags_.split(','));    
+    foreach (QString key, tags.keys()) {
+        if(!key.isEmpty()){
+            ui->lwTagsAvailable->addItem(key);
+        }
+    }
 }
 
 void NewNoteDialog::checkEnablePbNewTag(const QString str)
@@ -70,8 +88,8 @@ void NewNoteDialog::validateNote()
 
 void NewNoteDialog::on_pbNewTag_clicked()
 {
-    //tags_ += "," + ui->leNewTag->text();
-    actRenderTags();
+    tags_[ui->leNewTag->text()] = 0;
     ui->lwTags->addItem(ui->leNewTag->text());
     ui->leNewTag->setText("");
+    actRenderTags();
 }

@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>New note</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>11</x>
@@ -85,7 +85,11 @@
          </spacer>
         </item>
         <item>
-         <widget class="QTextEdit" name="teText"/>
+         <widget class="QTextEdit" name="teText">
+          <property name="tabStopWidth">
+           <number>40</number>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

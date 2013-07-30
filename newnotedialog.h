@@ -2,6 +2,7 @@
 #define NEWNOTEDIALOG_H
 
 #include <QDialog>
+#include <QDebug>
 #include "noterecord.h"
 
 namespace Ui {
@@ -17,22 +18,22 @@ public:
     ~NewNoteDialog();
     
     NoteRecord rezult()const;
-    void setTags(const QString& tags);
+    void setAvailableTags(const QMap<QString, int> &tags);
     
 private slots:
-    void on_buttonBox_accepted();
-    
     void actRenderTags();
+    void actRenderAvailableTags(QMap<QString, int> tags);
     void checkEnablePbNewTag(const QString str);
-    void validateNote();
+    void validateNote();    
     
+    void on_buttonBox_accepted();
     void on_pbNewTag_clicked();
     
 private:
     Ui::NewNoteDialog *ui;
     
     NoteRecord note_;
-    QString tags_;
+    QMap<QString, int> tags_;
 };
 
 #endif // NEWNOTEDIALOG_H

@@ -3,6 +3,8 @@
 
 #include <QString>
 #include <QDateTime>
+#include <QMap>
+#include "tools/mapTool.h"
 
 class NoteRecord
 {
@@ -15,9 +17,6 @@ public:
     QString text() const;
     void setText(const QString &text);
     
-    QString tags() const;
-    void setTags(const QString &tags);
-    
     QDateTime dtcr() const;
     void setDtcr(const QDateTime &dtcr);
     
@@ -26,16 +25,25 @@ public:
     
     bool isNull()const;
     
+    QMap<QString, int> tags() const;
+    void setTags(const QMap<QString, int> &tags);
+    void setTags(const QString str);
+    void addTag(const QString tag);
+    void initBegin();
+    void initEnd();
+    
 private slots:
     void validate();
     
 private:
     QString caption_;
     QString text_;
-    QString tags_;
+//    QString tags_;
+    QMap<QString, int> tags_;
     QDateTime dtcr_;
     QDateTime dtmd_;
     bool isValid_;
+    bool isInit_;
 };
 
 #endif // NOTERECORD_H
