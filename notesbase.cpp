@@ -1,8 +1,8 @@
 #include "notesbase.h"
 
 NotesBase::NotesBase():
-    crdt_(QDateTime::currentDateTime()),
-    mddt_(QDateTime::currentDateTime()),
+    dtcr_(QDateTime::currentDateTime()),
+    dtmd_(QDateTime::currentDateTime()),
     tags_(msiFromString(""))
 {
 }
@@ -18,6 +18,13 @@ void NotesBase::add(const NoteRecord &rec)
     adsorbTagsFromRecord(rec);
 }
 
+void NotesBase::remove(const int index)
+{
+    if(index >= 0 && index < records_.size()){
+        records_.removeAt(index);
+    }
+}
+
 
 void NotesBase::rm(const int index)
 {
@@ -31,8 +38,8 @@ bool NotesBase::writeToXML(const QString fname)
     QDomDocument doc;
         
     QDomElement deNotesBase = doc.createElement("NotesBase");
-    deNotesBase.setAttribute("cr", crdt_.toTime_t());
-    deNotesBase.setAttribute("md", mddt_.toTime_t());
+    deNotesBase.setAttribute("cr", dtcr_.toTime_t());
+    deNotesBase.setAttribute("md", dtmd_.toTime_t());
     
     QDomElement deTags = doc.createElement("Tags");
     QDomText deTagsText = doc.createTextNode(msiToString(tags()));
@@ -70,7 +77,7 @@ bool NotesBase::writeToXML(const QString fname)
     deNotesBase.appendChild(deNotes);
     
     QFile f(fname);
-    if(!f.open(QIODevice::WriteOnly | QIODevice::Text)){
+    if(!f.open(QIODevice::WriteOnly/* | QIODevice::Text*/)){
         qDebug() << QString("[ERRR]cannot open file [%1] to write base").arg(fname);
         return false;
     }
@@ -108,12 +115,12 @@ bool NotesBase::readFromXML(const QString fname)
     
     QDomNode dnMainChild = doc.firstChild();    //NoteBase
     QString sBuff = deMain.attribute("cr");
-    crdt_ = dtFromString(sBuff);
+    dtcr_ = dtFromString(sBuff);
     sBuff = deMain.attribute("md");
-    mddt_ = dtFromString(sBuff);
+    dtmd_ = dtFromString(sBuff);
     
-    qDebug() << "crdt\t" << crdt_.toString();
-    qDebug() << "mddt\t" << mddt_.toString();
+    qDebug() << "crdt\t" << dtcr_.toString();
+    qDebug() << "mddt\t" << dtmd_.toString();
     
     QDomNode dnChild = dnMainChild.firstChild();    //First child of NoteBase
     
@@ -132,6 +139,7 @@ bool NotesBase::readFromXML(const QString fname)
                 qDebug() << "Notes found";
 
                 NoteRecord n;
+                n.initBegin();
                 
                 QDomNode dnNotesChild = de.firstChild();    //Note
                 qDebug() << dnNotesChild.toElement().tagName();
@@ -196,7 +204,7 @@ NoteRecord NotesBase::item(const int index) const
 
 void NotesBase::updateModifyTime()
 {
-    mddt_ = QDateTime::currentDateTime();
+    dtmd_ = QDateTime::currentDateTime();
 }
 
 QDateTime NotesBase::dtFromString(const QString s)

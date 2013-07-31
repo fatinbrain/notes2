@@ -33,11 +33,11 @@ void NoteRecord::validate()
         if(dtcr_ == QDateTime::fromMSecsSinceEpoch(0)){
             dtcr_ = QDateTime::currentDateTime();
         }
-        if(dtmd_ == QDateTime::fromMSecsSinceEpoch(0)){
-            dtmd_ = QDateTime::currentDateTime();
-        }
+
         if(!isInit_){
-            dtmd_ = QDateTime::currentDateTime();
+            if(dtmd_ == QDateTime::fromMSecsSinceEpoch(0)){
+                dtmd_ = QDateTime::currentDateTime();
+            }
         }
     }
 }

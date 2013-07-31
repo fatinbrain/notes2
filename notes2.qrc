@@ -3,5 +3,6 @@
         <file>img/Exit.png</file>
         <file>img/Add.png</file>
         <file>img/Remove.png</file>
+        <file>img/About.png</file>
     </qresource>
 </RCC>

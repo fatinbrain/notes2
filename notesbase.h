@@ -24,6 +24,7 @@ public:
 public slots:
     void clear();    
     void add(const NoteRecord& rec);
+    void remove(const int index);
     int size() const;
     void rm(const int index);
     bool writeToXML(const QString fname);
@@ -32,8 +33,8 @@ public slots:
     void updateModifyTime();
     
 private:
-    QDateTime crdt_;
-    QDateTime mddt_;
+    QDateTime dtcr_;
+    QDateTime dtmd_;
     QMap<QString, int> tags_;
     QList<NoteRecord> records_;
     
