@@ -25,7 +25,6 @@ void NotesBase::remove(const int index)
     }
 }
 
-
 void NotesBase::rm(const int index)
 {
     records_.removeAt(index);
@@ -109,7 +108,7 @@ bool NotesBase::readFromXML(const QString fname)
     }
     f.close();
     
-    qDebug() << doc.toString(4);
+//    qDebug() << doc.toString(4);
     
     QDomElement deMain = doc.documentElement();
     
@@ -119,30 +118,30 @@ bool NotesBase::readFromXML(const QString fname)
     sBuff = deMain.attribute("md");
     dtmd_ = dtFromString(sBuff);
     
-    qDebug() << "crdt\t" << dtcr_.toString();
-    qDebug() << "mddt\t" << dtmd_.toString();
+//    qDebug() << "crdt\t" << dtcr_.toString();
+//    qDebug() << "mddt\t" << dtmd_.toString();
     
     QDomNode dnChild = dnMainChild.firstChild();    //First child of NoteBase
     
     while(!dnChild.isNull()){
         if(dnChild.isElement()){
             QDomElement de = dnChild.toElement();
-            qDebug() << de.tagName();
+//            qDebug() << de.tagName();
             
             if(de.tagName() == "Tags"){
                 QDomText dt = de.firstChild().toText();                
-                qDebug() << "tags:\t" + dt.data();
+//                qDebug() << "tags:\t" + dt.data();
                 tags_ = msiFromString(dt.data());
             }
             
             if(de.tagName() == "Notes"){
-                qDebug() << "Notes found";
+//                qDebug() << "Notes found";
 
                 NoteRecord n;
                 n.initBegin();
                 
                 QDomNode dnNotesChild = de.firstChild();    //Note
-                qDebug() << dnNotesChild.toElement().tagName();
+//                qDebug() << dnNotesChild.toElement().tagName();
                                 
                 while(!dnNotesChild.isNull()){  //jo Notes
                     
@@ -150,8 +149,8 @@ bool NotesBase::readFromXML(const QString fname)
                     n.setDtcr(dtFromString(sBuff));
                     sBuff = dnNotesChild.toElement().attribute("md");
                     n.setDtmd(dtFromString(sBuff));
-                    qDebug() << "crdt\t" << n.dtcr().toString();
-                    qDebug() << "mddt\t" << n.dtmd().toString();                      
+//                    qDebug() << "crdt\t" << n.dtcr().toString();
+//                    qDebug() << "mddt\t" << n.dtmd().toString();
                     
                     QDomNode dnNote = dnNotesChild.firstChild();                    
                     
@@ -163,15 +162,15 @@ bool NotesBase::readFromXML(const QString fname)
                           
                             if(deNotesEl.tagName() == "Caption"){
                                 QDomText dtCaptionText = deNotesEl.firstChild().toText();
-                                qDebug() << "Caption\t" + dtCaptionText.data();
+//                                qDebug() << "Caption\t" + dtCaptionText.data();
                                 n.setCaption(dtCaptionText.data());
                             }else if(deNotesEl.tagName() == "Text"){
                                 QDomText dtTextText = deNotesEl.firstChild().toText();
-                                qDebug() << "Text\t" + dtTextText.data();
+//                                qDebug() << "Text\t" + dtTextText.data();
                                 n.setText(dtTextText.data());
                             }else if(deNotesEl.tagName() == "Tags"){
                                 QDomText dtTagsText = deNotesEl.firstChild().toText();
-                                qDebug() << "Tags\t" + dtTagsText.data();
+//                                qDebug() << "Tags\t" + dtTagsText.data();
                                 n.setTags(msiFromString(dtTagsText.data()));
                             }
                         }
@@ -200,6 +199,11 @@ NoteRecord NotesBase::item(const int index) const
     }else{
         return NoteRecord();
     }
+}
+
+void NotesBase::setItem(const int index, const NoteRecord record)
+{
+    records_[index] = record;
 }
 
 void NotesBase::updateModifyTime()

@@ -15,7 +15,7 @@
 class NotesBase
 {
 public:
-    NotesBase();
+    NotesBase();    
 
     QMap<QString, int> tags() const;
     void setTags(const QMap<QString, int> &tags);
@@ -30,6 +30,7 @@ public slots:
     bool writeToXML(const QString fname);
     bool readFromXML(const QString fname);
     NoteRecord item(const int index) const;
+    void setItem(const int index, const NoteRecord record);
     void updateModifyTime();
     
 private:

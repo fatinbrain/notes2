@@ -9,10 +9,12 @@
 #include <QSettings>
 #include <QDir>
 #include <QFileDialog>
+#include <QTextBlock>
 
 #include "newnotedialog.h"
-#include "notesbase.h"
-#include "noterecord.h"
+#include "datastruct/notesbase.h"
+#include "datastruct/noterecord.h"
+#include "markdown/markdowncxx.h"
 
 namespace Ui {
 class Notes2;
@@ -26,17 +28,19 @@ public:
     explicit Notes2(QWidget *parent = 0);
     ~Notes2();
     
+    
+    
 private slots:
     void saveAndExit();
     void addNewNote();
     void removeNote(const int index);
-    void actRenderBase();
-    void actRenderNote(const int index);
-    void checkRmNoteAvailable(const int index);
+    void renderBase();
+    void renderNote(const int index);    
+    void checkRmNoteAvailable(const int currentIndex = -1);
     void readBase(const QString fname);
     void updateNoteTime();
-    void readSettings();
-    void writeSettings();
+    QString getNewBaseFileName();    
+    void editCurrentNote();
     
     void on_actionExit_triggered();
     void on_actionAdd_note_triggered();
@@ -47,16 +51,25 @@ private slots:
     void on_pbRemoveNote_clicked();
     void on_actionRemove_note_triggered();
     
+    void on_actionOpen_base_triggered();
+    
+    void on_actionEdit_note_triggered();
+    
 private:
     Ui::Notes2 *ui;
     
-    NotesBase nb;    
+    NotesBase nb;
+    QString fname;
+    QString sCss;
     
     QAction* aRmNote;
     QTimer* tmr;    
     
     QString ago(const double value);
-    QString fname;
+    void readCss();
+    void readSettings();
+    void writeSettings();
+    int reversedIndex();
 };
 
 #endif // NOTES2_H

@@ -38,3 +38,18 @@ QMap<QString, int> msiFromString(const QString str,
     return buff;
 }
 
+
+QString msiToSimpleString(const QMap<QString, int> map, QString wordsSepeartor)
+{
+    QString s;
+    
+    foreach(QString k, map.keys()){
+        if(!k.isEmpty()){
+            s += k + wordsSepeartor;
+        }
+    }
+    
+    s = s.left(s.length() - 1);
+    
+    return s;
+}

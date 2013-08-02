@@ -9,7 +9,8 @@
 class NoteRecord
 {
 public:
-    NoteRecord(QString caption = "", QString text = "", QString tags = "");    
+    NoteRecord(QString caption = "", QString text = "", QString tags = "");
+//    NoteRecord(const NoteRecord& other);
     
     QString caption() const;
     void setCaption(const QString &caption);
@@ -23,7 +24,7 @@ public:
     QDateTime dtmd() const;
     void setDtmd(const QDateTime &dtmd);
     
-    bool isNull()const;
+    bool isValid()const;
     
     QMap<QString, int> tags() const;
     void setTags(const QMap<QString, int> &tags);
@@ -31,6 +32,7 @@ public:
     void addTag(const QString tag);
     void initBegin();
     void initEnd();
+    void clear();
     
 private slots:
     void validate();

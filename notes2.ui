@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>536</width>
-    <height>423</height>
+    <width>645</width>
+    <height>544</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,149 +16,195 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout_5">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QListWidget" name="lwNotes">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>250</width>
-            <height>16777215</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_4">
-          <property name="spacing">
-           <number>0</number>
-          </property>
+       <widget class="QSplitter" name="splitter">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <widget class="QListWidget" name="lwNotes">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>250</width>
+           <height>16777215</height>
+          </size>
+         </property>
+        </widget>
+        <widget class="QWidget" name="layoutWidget">
+         <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QTextEdit" name="teNoteText">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>1</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+           <widget class="QTextBrowser" name="tbNoteText">
+            <property name="font">
+             <font>
+              <pointsize>50</pointsize>
+              <stylestrategy>PreferAntialias</stylestrategy>
+             </font>
             </property>
-            <property name="tabStopWidth">
-             <number>40</number>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::WinPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Sunken</enum>
+            </property>
+            <property name="lineWidth">
+             <number>2</number>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
             </property>
            </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_3">
-            <property name="spacing">
-             <number>0</number>
-            </property>
+           <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout">
-              <property name="spacing">
-               <number>0</number>
+             <widget class="QLabel" name="lcTags">
+              <property name="text">
+               <string>Tags:</string>
               </property>
-              <item>
-               <widget class="QLabel" name="lcCreation">
-                <property name="text">
-                 <string>Creation</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="lCr">
-                  <property name="text">
-                   <string>na</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_2">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lCrAgo">
-                  <property name="text">
-                   <string>na</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
+             </widget>
             </item>
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_2">
-              <property name="spacing">
-               <number>0</number>
+             <spacer name="horizontalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
               </property>
-              <item>
-               <widget class="QLabel" name="lcModification">
-                <property name="text">
-                 <string>Modification</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_3">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="lMd">
-                  <property name="text">
-                   <string>na</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_3">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QLabel" name="lMdAgo">
-                  <property name="text">
-                   <string>na</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="lTags">
+              <property name="text">
+               <string>na</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="lcCreation">
+              <property name="text">
+               <string>Cr:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="lCr">
+              <property name="text">
+               <string>na</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="lCrAgo">
+              <property name="text">
+               <string>na</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLabel" name="lcModification">
+              <property name="text">
+               <string>Md:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="lMd">
+              <property name="text">
+               <string>na</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="lMdAgo">
+              <property name="text">
+               <string>na</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
          </layout>
-        </item>
-       </layout>
+        </widget>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -230,14 +276,13 @@
      </layout>
     </item>
    </layout>
-   <zorder>lcCreation</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>536</width>
+     <width>645</width>
      <height>21</height>
     </rect>
    </property>
@@ -245,6 +290,8 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionOpen_base"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuNotes">
@@ -252,6 +299,7 @@
      <string>Notes</string>
     </property>
     <addaction name="actionAdd_note"/>
+    <addaction name="actionEdit_note"/>
     <addaction name="actionRemove_note"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
@@ -272,7 +320,10 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionOpen_base"/>
+   <addaction name="separator"/>
    <addaction name="actionAdd_note"/>
+   <addaction name="actionEdit_note"/>
    <addaction name="actionRemove_note"/>
    <addaction name="separator"/>
    <addaction name="actionAbout_program"/>
@@ -308,7 +359,7 @@
   </action>
   <action name="actionRemove_note">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="notes2.qrc">
@@ -331,8 +382,36 @@
    </property>
   </action>
   <action name="actionAbout_Qt">
+   <property name="icon">
+    <iconset resource="notes2.qrc">
+     <normaloff>:/img/img/Qt.png</normaloff>:/img/img/Qt.png</iconset>
+   </property>
    <property name="text">
     <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionOpen_base">
+   <property name="icon">
+    <iconset resource="notes2.qrc">
+     <normaloff>:/img/img/Open.png</normaloff>:/img/img/Open.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open base</string>
+   </property>
+   <property name="toolTip">
+    <string>Open existing base</string>
+   </property>
+  </action>
+  <action name="actionEdit_note">
+   <property name="icon">
+    <iconset resource="notes2.qrc">
+     <normaloff>:/img/img/Modify.png</normaloff>:/img/img/Modify.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edit note</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit current note</string>
    </property>
   </action>
  </widget>
@@ -348,8 +427,8 @@
    <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>491</x>
-     <y>275</y>
+     <x>524</x>
+     <y>391</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>
@@ -364,8 +443,8 @@
    <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>48</x>
-     <y>276</y>
+     <x>140</x>
+     <y>391</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>

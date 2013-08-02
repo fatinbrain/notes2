@@ -4,5 +4,8 @@
         <file>img/Add.png</file>
         <file>img/Remove.png</file>
         <file>img/About.png</file>
+        <file>img/Open.png</file>
+        <file>img/Qt.png</file>
+        <file>img/Modify.png</file>
     </qresource>
 </RCC>

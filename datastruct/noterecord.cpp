@@ -4,10 +4,17 @@ NoteRecord::NoteRecord(QString caption, QString text, QString tags):
     caption_(caption), text_(text), tags_(msiFromString(tags)),
     dtcr_(QDateTime::fromMSecsSinceEpoch(0)),
     dtmd_(QDateTime::fromMSecsSinceEpoch(0)),
-    isValid_(true),
+    isValid_(false),
     isInit_(true)
 {
+    validate();
 }
+
+//NoteRecord::NoteRecord(const NoteRecord &other)
+//{
+//    caption_ = other.caption();
+//    text_ = other.text();
+//}
 
 QDateTime NoteRecord::dtmd() const
 {
@@ -21,7 +28,7 @@ void NoteRecord::setDtmd(const QDateTime &dtmd)
     }
 }
 
-bool NoteRecord::isNull() const
+bool NoteRecord::isValid() const
 {
     return isValid_;
 }
@@ -107,4 +114,15 @@ void NoteRecord::setCaption(const QString &caption)
 void NoteRecord::initEnd()
 {
     isInit_ = false;
+}
+
+void NoteRecord::clear()
+{
+    caption_ = "";
+    text_ = "";
+    tags_.clear();
+    dtcr_ = QDateTime::fromMSecsSinceEpoch(0);
+    dtmd_ = QDateTime::fromMSecsSinceEpoch(0);
+    isValid_ = false;
+    isInit_ = true;
 }
