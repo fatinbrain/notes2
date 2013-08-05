@@ -6,9 +6,9 @@ Notes2::Notes2(QWidget *parent) :
     ui(new Ui::Notes2)
 {
     ui->setupUi(this);
-    
-//    ui->mainToolBar->actions().at(1)->setEnabled(false);
-    ui->menuNotes->actions().at(1)->setEnabled(false);
+
+    ui->menuNotes->actions().at(1)->setEnabled(false);  //edit note
+    ui->menuNotes->actions().at(2)->setEnabled(false);  //remove note
     
     tmr = new QTimer(this);
     tmr->start(1000);
@@ -19,6 +19,10 @@ Notes2::Notes2(QWidget *parent) :
             this, SLOT(checkRmNoteAvailable(int)));    
     connect(tmr, SIGNAL(timeout()),
             this, SLOT(updateNoteTime()));
+    connect(ui->leSearch, SIGNAL(textChanged(QString)),
+            this, SLOT(searchBase()));
+//    connect(ui->leSearch, SIGNAL(textChanged(QString)),
+//            this, SLOT(checkNoteAccessabe()));
     
     QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, qApp->applicationDirPath());
     
@@ -39,7 +43,9 @@ Notes2::Notes2(QWidget *parent) :
         readBase(fname);
     }
     
-//    checkRmNoteAvailable();
+    ui->gbSearch->setVisible(false);
+    
+//    checkNoteAccessabe();
 }
 
 Notes2::~Notes2()
@@ -55,7 +61,7 @@ void Notes2::on_actionExit_triggered()
 void Notes2::saveAndExit()
 {
     qDebug() << "[action exit]will save base and exit";    
-    nb.writeToXML(fname);
+    nbOrig.writeToXML(fname);
     writeSettings();
     close();
 }
@@ -65,22 +71,24 @@ void Notes2::addNewNote()
     qDebug() << QString("[notes2] attempt to add new note");
     
     NewNoteDialog* nnDialog = new NewNoteDialog(this);
-    nnDialog->setAvailableTags(nb.tags());
+    nnDialog->setAvailableTags(nbOrig.tags());
     nnDialog->clearData();
     
     if(nnDialog->exec() == QDialog::Accepted){        
         NoteRecord n = nnDialog->rezult();
-        nb.add(n);
-        nb.updateModifyTime();
+        nbOrig.add(n);
+        nbOrig.updateModifyTime();
+        nb = nbOrig;
         renderBase();
     }else{
         qDebug() << "[dia rez]rejected";
-    }    
+    }
 }
 
-void Notes2::removeNote(const int index)
+void Notes2::removeNote()
 {
-    nb.remove(nb.size() - index - 1);
+    nbOrig.remove(nbOrig.indexByHash(currentItemHash()));
+    nb = nbOrig;
     renderBase();
 }
 
@@ -111,7 +119,6 @@ void Notes2::renderNote(const int index)
         td->setDefaultStyleSheet(sCss);
         td->setHtml(sHtml);        
 //        qDebug() << sHtml;
-
         
         ui->tbNoteText->clear();
         ui->tbNoteText->setDocument(td);
@@ -135,14 +142,19 @@ void Notes2::checkRmNoteAvailable(const int currentIndex)
     
     bool isVaildIndex = (index >= 0);
     ui->pbRemoveNote->setEnabled(isVaildIndex);
-    ui->menuNotes->actions().at(1)->setEnabled(isVaildIndex);
+    ui->pbXAction->setEnabled(isVaildIndex);
+    ui->menuNotes->actions().at(1)->setEnabled(isVaildIndex/* && canEdit*/);
+    ui->menuNotes->actions().at(2)->setEnabled(isVaildIndex);
 }
 
 void Notes2::readBase(const QString fname)
 {
-    nb.clear();
-    nb.readFromXML(fname);
-    ui->statusBar->showMessage(QString("Loaded from [%1], records[%2]").arg(fname).arg(nb.size()), 3000);
+    nbOrig.clear();
+    nbOrig.readFromXML(fname);
+    ui->statusBar->showMessage(QString("Loaded from [%1], records[%2]").arg(fname).arg(nbOrig.size()), 3000);
+    
+    nb = nbOrig;
+    
     renderBase();
 }
 
@@ -151,6 +163,15 @@ int Notes2::reversedIndex()
     int reversedIndex = nb.size() - ui->lwNotes->currentRow() - 1;
     
     return reversedIndex;
+}
+
+uint Notes2::currentItemHash()
+{
+    if(ui->lwNotes->currentRow() < 0){
+        return 0;
+    }else{
+        return nb.itemHash(reversedIndex());
+    }
 }
 
 void Notes2::updateNoteTime()
@@ -182,10 +203,21 @@ QString Notes2::getNewBaseFileName()
     return f;
 }
 
+
+void Notes2::writeSettings()
+{
+    QSettings settings("settings.ini", QSettings::IniFormat);
+    settings.setValue("fname", fname);
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("state", saveState());
+}
+
 void Notes2::readSettings()
 {
     QSettings settings("settings.ini", QSettings::IniFormat);
-    fname = settings.value("fname", "").toString();    
+    fname = settings.value("fname", "").toString();
+    restoreGeometry(settings.value("geometry").toByteArray());
+    restoreState(settings.value("state").toByteArray());
 }
 
 void Notes2::on_actionAdd_note_triggered()
@@ -195,18 +227,27 @@ void Notes2::on_actionAdd_note_triggered()
 
 void Notes2::editCurrentNote()
 {
+//    if(!isNoteAcessabe){
+//        return;
+//    }
+    
     if(ui->lwNotes->currentRow() >= 0){
         qDebug() << QString("[notes2] attempt to edit note");
         
         NewNoteDialog* nnDialog = new NewNoteDialog(this);
         nnDialog->clearData();
-        nnDialog->setNote(nb.item(reversedIndex()));
-        nnDialog->setAvailableTags(nb.tags());
+        //nnDialog->setNote(nbOrig.item(reversedIndex()));
+        uint currItemHash = nb.itemHash(reversedIndex());
+        nnDialog->setNote(nbOrig.itemByHash(currItemHash));
+        nnDialog->setAvailableTags(nbOrig.tags());
         
         if(nnDialog->exec() == QDialog::Accepted){        
             NoteRecord n = nnDialog->rezult();   
-            nb.setItem(reversedIndex(), n);
-            nb.updateModifyTime();
+            //nbOrig.setItem(reversedIndex(), n);
+            nbOrig.setItem(nbOrig.indexByHash(currItemHash), n);
+            nbOrig.updateModifyTime();
+            nb = nbOrig;
+            searchBase();
             renderBase();
         }else{
             qDebug() << "[dia rez]rejected";
@@ -214,22 +255,36 @@ void Notes2::editCurrentNote()
     }    
 }
 
-void Notes2::on_pbReadBase_clicked()
+void Notes2::searchBase()
 {
-    ui->statusBar->showMessage("edit note", 20000);
-    editCurrentNote();
+    if(ui->leSearch->text().isEmpty()){
+        nb = nbOrig;        
+        ui->gbSearch->setTitle("Search");
+    }else{
+        nb.clear();
+        
+        for(int i = 0; i < nbOrig.size(); i++){
+            if(nbOrig.item(i).text().contains(ui->leSearch->text(), Qt::CaseInsensitive)){
+                nb.add(nbOrig.item(i));
+            }
+        }
+        
+        ui->gbSearch->setTitle(QString("Search [%1/%2]").arg(nb.size()).arg(nbOrig.size()));
+    }
+        
+    renderBase();
 }
+
+//void Notes2::checkNoteAccessabe()
+//{
+//    isNoteAcessabe = ui->leSearch->text().isEmpty();
+//    ui->menuNotes->actions().at(1)->setEnabled(isNoteAcessabe);
+//    ui->menuNotes->actions().at(2)->setEnabled(isNoteAcessabe);
+//}
 
 void Notes2::on_pb_clicked()
 {
-    qDebug() << "attempt to write base to xml";
-    if(nb.writeToXML("base.xml")){
-        qDebug() << "write norm";
-        ui->statusBar->showMessage("write norm", 5000);
-    }else{
-        qDebug() << "write FAULT";
-        ui->statusBar->showMessage("write FAULT", 5000);
-    }
+    ui->gbSearch->setVisible(!ui->gbSearch->isVisible());
 }
 
 void Notes2::on_actionAbout_Qt_triggered()
@@ -244,12 +299,12 @@ void Notes2::on_actionAbout_program_triggered()
 
 void Notes2::on_pbRemoveNote_clicked()
 {
-    removeNote(ui->lwNotes->currentRow());
+    removeNote(/*ui->lwNotes->currentRow()*/);
 }
 
 void Notes2::on_actionRemove_note_triggered()
 {
-    removeNote(ui->lwNotes->currentRow());
+    removeNote(/*ui->lwNotes->currentRow()*/);
 }
 
 QString Notes2::ago(const double value)
@@ -295,13 +350,6 @@ void Notes2::readCss()
         sCss = "body{background-color:silver;font-family:georgia,serif}em{color:black;}h1,h2,h3,h4,h5,h6{font-family:sans-serif;}p{text-indent:20px;}";
         qDebug() << "cannot read [default.css], use default css";
     }
-    //    sCss = "";
-}
-
-void Notes2::writeSettings()
-{
-    QSettings settings("settings.ini", QSettings::IniFormat);
-    settings.setValue("fname", fname);
 }
 
 void Notes2::on_actionOpen_base_triggered()
@@ -316,4 +364,26 @@ void Notes2::on_actionOpen_base_triggered()
 void Notes2::on_actionEdit_note_triggered()
 {
     editCurrentNote();
+}
+
+void Notes2::on_pbXAction_clicked()
+{
+    editCurrentNote();
+}
+
+void Notes2::on_lwNotes_doubleClicked(const QModelIndex &index)
+{
+//    if(isNoteAcessabe){
+        editCurrentNote();
+//    }
+}
+
+void Notes2::on_pbSearchClear_clicked()
+{
+    ui->leSearch->setText("");
+}
+
+void Notes2::on_actionSearch_triggered()
+{
+    ui->gbSearch->setVisible(!ui->gbSearch->isVisible());
 }

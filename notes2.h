@@ -33,7 +33,7 @@ public:
 private slots:
     void saveAndExit();
     void addNewNote();
-    void removeNote(const int index);
+    void removeNote();
     void renderBase();
     void renderNote(const int index);    
     void checkRmNoteAvailable(const int currentIndex = -1);
@@ -41,24 +41,29 @@ private slots:
     void updateNoteTime();
     QString getNewBaseFileName();    
     void editCurrentNote();
+    void searchBase();
+//    void checkNoteAccessabe();
     
     void on_actionExit_triggered();
     void on_actionAdd_note_triggered();
-    void on_pbReadBase_clicked();
     void on_pb_clicked();
     void on_actionAbout_Qt_triggered();
     void on_actionAbout_program_triggered();
     void on_pbRemoveNote_clicked();
     void on_actionRemove_note_triggered();
-    
     void on_actionOpen_base_triggered();
-    
     void on_actionEdit_note_triggered();
+    void on_pbXAction_clicked();    
+    void on_lwNotes_doubleClicked(const QModelIndex &index);    
+    void on_pbSearchClear_clicked();
+    
+    void on_actionSearch_triggered();
     
 private:
     Ui::Notes2 *ui;
     
     NotesBase nb;
+    NotesBase nbOrig;
     QString fname;
     QString sCss;
     
@@ -70,6 +75,7 @@ private:
     void readSettings();
     void writeSettings();
     int reversedIndex();
+    uint currentItemHash();
 };
 
 #endif // NOTES2_H

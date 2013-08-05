@@ -29,11 +29,16 @@ private slots:
     void checkEnablePbNewTag(const QString str);
     void validateNote();
     void checkTagsButtons();
+    void addCurrTag();
+    void rmCurrTag();
     
     void on_buttonBox_accepted();
     void on_pbNewTag_clicked();    
     void on_pbAddTag_clicked();    
     void on_pbRemoveTag_clicked();
+    void on_lwTagsAvailable_doubleClicked(const QModelIndex &index);
+    
+    void on_lwTags_doubleClicked(const QModelIndex &index);
     
 private:
     Ui::NewNoteDialog *ui;

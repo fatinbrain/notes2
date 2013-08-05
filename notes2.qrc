@@ -7,5 +7,6 @@
         <file>img/Open.png</file>
         <file>img/Qt.png</file>
         <file>img/Modify.png</file>
+        <file>img/Filter.png</file>
     </qresource>
 </RCC>

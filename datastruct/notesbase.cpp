@@ -82,7 +82,9 @@ bool NotesBase::writeToXML(const QString fname)
     }
     
     QTextStream ts(&f);
-    ts << doc.toString(4);
+    ts.setCodec("UTF-8");
+    ts.setGenerateByteOrderMark(true);
+    ts << doc.toString(4);    
     
     f.close();
     
@@ -199,6 +201,39 @@ NoteRecord NotesBase::item(const int index) const
     }else{
         return NoteRecord();
     }
+}
+
+NoteRecord NotesBase::itemByHash(const uint hash) const
+{
+    for(int i = 0; i < records_.size(); i++){
+        if(hash == qHash(records_[i].text())){
+            return records_.at(i);
+        }
+    }
+    
+    return NoteRecord();
+}
+
+uint NotesBase::itemHash(const int index) const
+{
+    if(index >= 0 && index < records_.size()){
+        return qHash(records_[index].text());
+    }else{
+        return 0;
+    }
+}
+
+int NotesBase::indexByHash(const uint hash) const
+{
+    int index = -1;
+    
+    for(int i = 0; i < records_.size(); i++){
+        if(hash == qHash(records_.at(i).text())){
+            return i;
+        }
+    }
+    
+    return index;
 }
 
 void NotesBase::setItem(const int index, const NoteRecord record)

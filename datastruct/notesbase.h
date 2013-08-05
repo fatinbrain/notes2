@@ -30,6 +30,9 @@ public slots:
     bool writeToXML(const QString fname);
     bool readFromXML(const QString fname);
     NoteRecord item(const int index) const;
+    NoteRecord itemByHash(const uint hash) const;
+    uint itemHash(const int index) const;
+    int indexByHash(const uint hash)const;
     void setItem(const int index, const NoteRecord record);
     void updateModifyTime();
     

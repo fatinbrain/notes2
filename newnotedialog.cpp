@@ -113,15 +113,7 @@ void NewNoteDialog::checkTagsButtons()
     qDebug() << ui->lwTagsAvailable->currentRow();
 }
 
-void NewNoteDialog::on_pbNewTag_clicked()
-{
-    tags_[ui->leNewTag->text()] = 0;
-    ui->lwTags->addItem(ui->leNewTag->text());
-    ui->leNewTag->setText("");
-    renderTags();
-}
-
-void NewNoteDialog::on_pbAddTag_clicked()
+void NewNoteDialog::addCurrTag()
 {
     QString currTag = ui->lwTagsAvailable->currentItem()->text();
     
@@ -137,7 +129,7 @@ void NewNoteDialog::on_pbAddTag_clicked()
     renderTags();
 }
 
-void NewNoteDialog::on_pbRemoveTag_clicked()
+void NewNoteDialog::rmCurrTag()
 {
     QString currTag = ui->lwTags->currentItem()->text();
     
@@ -153,9 +145,37 @@ void NewNoteDialog::on_pbRemoveTag_clicked()
     renderTags();
 }
 
+void NewNoteDialog::on_pbNewTag_clicked()
+{
+    tags_[ui->leNewTag->text()] = 0;
+    ui->lwTags->addItem(ui->leNewTag->text());
+    ui->leNewTag->setText("");
+    renderTags();
+}
+
+void NewNoteDialog::on_pbAddTag_clicked()
+{
+    addCurrTag();
+}
+
+void NewNoteDialog::on_pbRemoveTag_clicked()
+{
+    rmCurrTag();
+}
+
 void NewNoteDialog::renderNote()
 {
     ui->teText->setText(note_.text());
     ui->leCaption->setText(note_.caption());
     renderTags();
+}
+
+void NewNoteDialog::on_lwTagsAvailable_doubleClicked(const QModelIndex &index)
+{
+    addCurrTag();
+}
+
+void NewNoteDialog::on_lwTags_doubleClicked(const QModelIndex &index)
+{
+    rmCurrTag();
 }
