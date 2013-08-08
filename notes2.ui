@@ -329,8 +329,8 @@
            <string>toggle filter</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>img/Filter.png</normaloff>img/Filter.png</iconset>
+           <iconset resource="notes2.qrc">
+            <normaloff>:/img/img/Search.png</normaloff>:/img/img/Search.png</iconset>
           </property>
          </widget>
         </item>
@@ -517,9 +517,9 @@
    </property>
    <property name="icon">
     <iconset>
-     <normaloff>img/Filter.png</normaloff>
-     <disabledoff>:/img/img/Filter.png</disabledoff>
-     <disabledon>:/img/img/Filter.png</disabledon>img/Filter.png</iconset>
+     <normaloff>img/Search.png</normaloff>
+     <disabledoff>:/img/img/Search.png</disabledoff>
+     <disabledon>:/img/img/Search.png</disabledon>img/Search.png</iconset>
    </property>
    <property name="text">
     <string>Search</string>

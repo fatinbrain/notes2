@@ -20,6 +20,8 @@ namespace Ui {
 class Notes2;
 }
 
+const QString APP_VER = "a01";
+
 class Notes2 : public QMainWindow
 {
     Q_OBJECT
@@ -27,8 +29,6 @@ class Notes2 : public QMainWindow
 public:
     explicit Notes2(QWidget *parent = 0);
     ~Notes2();
-    
-    
     
 private slots:
     void saveAndExit();
@@ -42,8 +42,7 @@ private slots:
     QString getNewBaseFileName();    
     void editCurrentNote();
     void searchBase();
-//    void checkNoteAccessabe();
-    
+
     void on_actionExit_triggered();
     void on_actionAdd_note_triggered();
     void on_pb_clicked();
@@ -76,6 +75,8 @@ private:
     void writeSettings();
     int reversedIndex();
     uint currentItemHash();
+    
+    
 };
 
 #endif // NOTES2_H

@@ -21,8 +21,6 @@ Notes2::Notes2(QWidget *parent) :
             this, SLOT(updateNoteTime()));
     connect(ui->leSearch, SIGNAL(textChanged(QString)),
             this, SLOT(searchBase()));
-//    connect(ui->leSearch, SIGNAL(textChanged(QString)),
-//            this, SLOT(checkNoteAccessabe()));
     
     QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, qApp->applicationDirPath());
     
@@ -44,8 +42,6 @@ Notes2::Notes2(QWidget *parent) :
     }
     
     ui->gbSearch->setVisible(false);
-    
-//    checkNoteAccessabe();
 }
 
 Notes2::~Notes2()
@@ -183,7 +179,6 @@ void Notes2::updateNoteTime()
     int index = reversedIndex();
     
     if(index >=0 && index < nb.size()){
-        //renderNote(ui->lwNotes->currentRow());
         ui->lCr->setText(nb.item(index).dtcr().toString());
         ui->lCrAgo->setText(ago(-QDateTime::currentDateTime().secsTo(nb.item(index).dtcr())));
         ui->lMd->setText(nb.item(index).dtmd().toString());
@@ -227,23 +222,17 @@ void Notes2::on_actionAdd_note_triggered()
 
 void Notes2::editCurrentNote()
 {
-//    if(!isNoteAcessabe){
-//        return;
-//    }
-    
     if(ui->lwNotes->currentRow() >= 0){
         qDebug() << QString("[notes2] attempt to edit note");
         
         NewNoteDialog* nnDialog = new NewNoteDialog(this);
         nnDialog->clearData();
-        //nnDialog->setNote(nbOrig.item(reversedIndex()));
         uint currItemHash = nb.itemHash(reversedIndex());
         nnDialog->setNote(nbOrig.itemByHash(currItemHash));
         nnDialog->setAvailableTags(nbOrig.tags());
         
         if(nnDialog->exec() == QDialog::Accepted){        
-            NoteRecord n = nnDialog->rezult();   
-            //nbOrig.setItem(reversedIndex(), n);
+            NoteRecord n = nnDialog->rezult();
             nbOrig.setItem(nbOrig.indexByHash(currItemHash), n);
             nbOrig.updateModifyTime();
             nb = nbOrig;
@@ -275,13 +264,6 @@ void Notes2::searchBase()
     renderBase();
 }
 
-//void Notes2::checkNoteAccessabe()
-//{
-//    isNoteAcessabe = ui->leSearch->text().isEmpty();
-//    ui->menuNotes->actions().at(1)->setEnabled(isNoteAcessabe);
-//    ui->menuNotes->actions().at(2)->setEnabled(isNoteAcessabe);
-//}
-
 void Notes2::on_pb_clicked()
 {
     ui->gbSearch->setVisible(!ui->gbSearch->isVisible());
@@ -294,17 +276,19 @@ void Notes2::on_actionAbout_Qt_triggered()
 
 void Notes2::on_actionAbout_program_triggered()
 {
-    QMessageBox::about(this, "About Notes2", "<h1>Notes 2</h1><p>Simple note management application<br/>with <strong>markdown</strong> support.</p>");
+    QString aboutText = QString("<h1>Notes 2</h1><h3>version [%1]</h3><p>Simple note management application<br/>with <strong>markdown</strong> support.</p>")
+            .arg(APP_VER);
+    QMessageBox::about(this, "About Notes2", aboutText);
 }
 
 void Notes2::on_pbRemoveNote_clicked()
 {
-    removeNote(/*ui->lwNotes->currentRow()*/);
+    removeNote();
 }
 
 void Notes2::on_actionRemove_note_triggered()
 {
-    removeNote(/*ui->lwNotes->currentRow()*/);
+    removeNote();
 }
 
 QString Notes2::ago(const double value)
@@ -373,9 +357,7 @@ void Notes2::on_pbXAction_clicked()
 
 void Notes2::on_lwNotes_doubleClicked(const QModelIndex &index)
 {
-//    if(isNoteAcessabe){
-        editCurrentNote();
-//    }
+    editCurrentNote();
 }
 
 void Notes2::on_pbSearchClear_clicked()

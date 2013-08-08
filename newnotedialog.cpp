@@ -59,6 +59,9 @@ void NewNoteDialog::setNote(const NoteRecord &nr)
 
 void NewNoteDialog::on_buttonBox_accepted()
 {
+    if(!ui->leNewTag->text().isEmpty()){
+        addNewTags();    
+    }
     note_.setCaption(ui->leCaption->text());
     note_.setText(ui->teText->toPlainText());
     note_.setDtmd(QDateTime::currentDateTime());
@@ -147,10 +150,7 @@ void NewNoteDialog::rmCurrTag()
 
 void NewNoteDialog::on_pbNewTag_clicked()
 {
-    tags_[ui->leNewTag->text()] = 0;
-    ui->lwTags->addItem(ui->leNewTag->text());
-    ui->leNewTag->setText("");
-    renderTags();
+    addNewTags();
 }
 
 void NewNoteDialog::on_pbAddTag_clicked()
@@ -167,6 +167,23 @@ void NewNoteDialog::renderNote()
 {
     ui->teText->setText(note_.text());
     ui->leCaption->setText(note_.caption());
+    renderTags();
+}
+
+void NewNoteDialog::addNewTags()
+{
+    if(ui->leNewTag->text().contains(",")){
+        QMap<QString, int> newtags = msiFromString(ui->leNewTag->text());
+        foreach (QString key, newtags.keys()) {
+            tags_.insert(key, 0);
+            ui->lwTags->addItem(key);
+        }
+    }else{
+        tags_[ui->leNewTag->text()] = 0;
+        ui->lwTags->addItem(ui->leNewTag->text());
+    }
+    
+    ui->leNewTag->setText("");
     renderTags();
 }
 

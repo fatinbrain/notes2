@@ -47,6 +47,7 @@ private:
     QMap<QString, int> tags_;
     
     void renderNote();
+    void addNewTags();
 };
 
 #endif // NEWNOTEDIALOG_H
