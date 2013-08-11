@@ -1,5 +1,4 @@
 notes2
 ======
 
-Simple notes managment system.
-First **Qt** application.
+Simple notes managment system with *markdown* support.
