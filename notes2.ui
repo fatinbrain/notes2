@@ -128,6 +128,9 @@
               <stylestrategy>PreferAntialias</stylestrategy>
              </font>
             </property>
+            <property name="contextMenuPolicy">
+             <enum>Qt::CustomContextMenu</enum>
+            </property>
             <property name="autoFillBackground">
              <bool>false</bool>
             </property>
@@ -142,6 +145,9 @@
             </property>
             <property name="midLineWidth">
              <number>1</number>
+            </property>
+            <property name="openExternalLinks">
+             <bool>true</bool>
             </property>
            </widget>
           </item>

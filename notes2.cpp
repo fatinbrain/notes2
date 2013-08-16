@@ -83,9 +83,13 @@ void Notes2::addNewNote()
 
 void Notes2::removeNote()
 {
-    nbOrig.remove(nbOrig.indexByHash(currentItemHash()));
-    nb = nbOrig;
-    renderBase();
+    if(QMessageBox::question(this, "Really?", "Are you shure to delete current note?", 
+                             QMessageBox::Yes | QMessageBox::No,
+                             QMessageBox::No) == QMessageBox::Yes){
+        nbOrig.remove(nbOrig.indexByHash(currentItemHash()));
+        nb = nbOrig;
+        renderBase();
+    }
 }
 
 void Notes2::renderBase()
@@ -144,10 +148,14 @@ void Notes2::checkRmNoteAvailable(const int currentIndex)
 }
 
 void Notes2::readBase(const QString fname)
-{
+{   
     nbOrig.clear();
     nbOrig.readFromXML(fname);
     ui->statusBar->showMessage(QString("Loaded from [%1], records[%2]").arg(fname).arg(nbOrig.size()), 3000);
+ 
+    if(boBackupOn && QFile::exists(fname)){
+        QFile::copy(fname, "backup.xml");
+    }
     
     nb = nbOrig;
     
@@ -205,12 +213,14 @@ void Notes2::writeSettings()
     settings.setValue("fname", fname);
     settings.setValue("geometry", saveGeometry());
     settings.setValue("state", saveState());
+    settings.setValue("doBackup", boBackupOn);
 }
 
 void Notes2::readSettings()
 {
     QSettings settings("settings.ini", QSettings::IniFormat);
     fname = settings.value("fname", "").toString();
+    boBackupOn = settings.value("doBackup", true).toBool();
     restoreGeometry(settings.value("geometry").toByteArray());
     restoreState(settings.value("state").toByteArray());
 }
@@ -262,6 +272,7 @@ void Notes2::searchBase()
     }
         
     renderBase();
+
 }
 
 void Notes2::on_pb_clicked()

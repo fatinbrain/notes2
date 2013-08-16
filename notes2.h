@@ -20,7 +20,7 @@ namespace Ui {
 class Notes2;
 }
 
-const QString APP_VER = "a01";
+const QString APP_VER = "a03";
 
 class Notes2 : public QMainWindow
 {
@@ -55,7 +55,6 @@ private slots:
     void on_pbXAction_clicked();    
     void on_lwNotes_doubleClicked(const QModelIndex &index);    
     void on_pbSearchClear_clicked();
-    
     void on_actionSearch_triggered();
     
 private:
@@ -67,7 +66,8 @@ private:
     QString sCss;
     
     QAction* aRmNote;
-    QTimer* tmr;    
+    QTimer* tmr;
+    QMenu* context;
     
     QString ago(const double value);
     void readCss();
@@ -76,7 +76,7 @@ private:
     int reversedIndex();
     uint currentItemHash();
     
-    
+    bool boBackupOn;
 };
 
 #endif // NOTES2_H
