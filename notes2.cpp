@@ -156,6 +156,9 @@ void Notes2::readBase(const QString fname)
     ui->statusBar->showMessage(QString("Loaded from [%1], records[%2]").arg(fname).arg(nbOrig.size()), 3000);
  
     if(boBackupOn && QFile::exists(fname)){
+        if(QFile::exists("backup.xml")){
+            QFile::remove("backup.xml");
+        }
         QFile::copy(fname, "backup.xml");
     }
     
