@@ -105,6 +105,8 @@ void Notes2::renderBase()
     if(nb.size() > 0){
         ui->lwNotes->setCurrentRow(0);
     }
+    
+    colorizeNotes();
 }
 
 void Notes2::renderNote(const int index)
@@ -162,9 +164,15 @@ void Notes2::readBase(const QString fname)
     renderBase();
 }
 
-int Notes2::reversedIndex()
+int Notes2::reversedIndex(int index)
 {
-    int reversedIndex = nb.size() - ui->lwNotes->currentRow() - 1;
+    int reversedIndex;
+    
+    if(index == -1){
+        reversedIndex = nb.size() - ui->lwNotes->currentRow() - 1;
+    }else{
+        reversedIndex = nb.size() - index - 1;
+    }
     
     return reversedIndex;
 }
@@ -176,6 +184,19 @@ uint Notes2::currentItemHash()
     }else{
         return nb.itemHash(reversedIndex());
     }
+}
+
+void Notes2::colorizeNotes()
+{
+    for(int i = 0; i < ui->lwNotes->count(); i++){
+        ui->lwNotes->item(i)->setBackgroundColor(genColorByWeekNum(nb.item(reversedIndex(i)).dtcr().date().weekNumber()));
+    }
+}
+
+QColor Notes2::genColorByWeekNum(uint weekNum)
+{
+    uint c = 255 - weekNum * 3;
+    return QColor(c,c,c);
 }
 
 void Notes2::updateNoteTime()

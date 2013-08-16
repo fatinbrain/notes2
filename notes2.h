@@ -73,8 +73,10 @@ private:
     void readCss();
     void readSettings();
     void writeSettings();
-    int reversedIndex();
+    int reversedIndex(int index = -1);
     uint currentItemHash();
+    void colorizeNotes();
+    QColor genColorByWeekNum(uint weekNum);
     
     bool boBackupOn;
 };
